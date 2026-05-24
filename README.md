@@ -12,7 +12,7 @@ runs on any Mac with no extra files beyond the bundled assets.
 
 The widget shown running alongside the full set:
 
-<video src="https://github.com/jke48222/recent-downloads-widget/raw/main/homescreen.mp4" controls width="100%"></video>
+[![Homescreen demo — click to play](homescreen-poster.png)](homescreen.mp4)
 
 ## Install
 
