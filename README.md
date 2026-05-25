@@ -39,12 +39,6 @@ the inlined design-system block at the top of `index.jsx`.
 - `index.jsx`
 - `drop-icons.sh`
 
-## Submitting to the Übersicht gallery
-
-Create a public GitHub repo with `widget.json`, `recent-downloads.widget.zip`, and a
-258x160 (or 516x320 hi-res) `screenshot.png`, then
-[open an issue](https://github.com/felixhageloh/uebersicht-widgets/issues) with the URL.
-
 ## Other widgets
 
 - [Animated Wallpaper](https://github.com/jke48222/animated-wallpaper-widget)

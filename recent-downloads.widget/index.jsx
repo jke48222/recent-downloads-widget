@@ -455,6 +455,11 @@ const parse = (output) =>
     return { path, name, ext, b64 };
   });
 
+// Memo of the last render so the periodic refresh doesn't re-render (and flash
+// the thumbnails) when the Downloads list is unchanged. Returning the same
+// element reference leaves the DOM — and the decoded images — untouched.
+let __dlSig = null, __dlEl = null;
+
 export const render = (props) => {
   if (isLoading(props)) return <Skel tint={T.inkMute} />;
 
@@ -472,7 +477,14 @@ export const render = (props) => {
 
   if (!rows.length) return <Empty text="Downloads is empty" />;
 
-  return (
+  const sig = JSON.stringify({
+    staleTs,
+    rows: rows.map((f) => [f.path, f.name, f.ext, f.b64 ? f.b64.length : 0]),
+  });
+  if (sig === __dlSig && __dlEl) return __dlEl;
+  __dlSig = sig;
+
+  return (__dlEl = (
     <div aria-label={`${rows.length} recent downloads`}>
       <DragHandle k="drop" />
       <ResizeHandle k="drop" />
@@ -497,5 +509,5 @@ export const render = (props) => {
         })}
       </div>
     </div>
-  );
+  ));
 };
