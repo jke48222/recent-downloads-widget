@@ -355,9 +355,12 @@ const resolve = (key, props, parse, mock) => {
 // filtered out. Clicking a tile opens the file.
 //
 // The script path is relative: Übersicht runs commands with the widget's own
-// directory as the working directory, so this resolves whether the widget is
-// installed as a single file or as a packaged .widget folder.
-export const command = `bash drop-icons.sh`;
+// Übersicht runs commands from the widgets ROOT, not the widget folder, so the
+// script is referenced through the folder. Fall back to a bare name in case a
+// given setup uses the widget folder as the working directory.
+export const command =
+  `if [ -f recent-downloads.widget/drop-icons.sh ]; then bash recent-downloads.widget/drop-icons.sh; ` +
+  `else bash drop-icons.sh; fi`;
 
 export const refreshFrequency = 1000 * 30; // every 30s
 

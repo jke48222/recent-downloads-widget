@@ -6,13 +6,13 @@ A self-contained widget for [Übersicht](http://tracesof.net/uebersicht/). The
 entire widget lives in `index.jsx` (the shared design system is inlined), so it
 runs on any Mac with no extra files beyond the bundled assets.
 
-![screenshot](screenshot.png)
+![screenshot](media/screenshot.png)
 
 ### On the desktop
 
 The widget shown running alongside the full set:
 
-[![Homescreen demo — click to play](homescreen-poster.png)](homescreen.mp4)
+[![Homescreen demo — click to play](media/homescreen-poster.png)](media/homescreen.mp4)
 
 ## Install
 
