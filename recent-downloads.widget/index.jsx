@@ -1,4 +1,4 @@
-import { React, run } from "uebersicht";
+import { React } from "uebersicht";
 // --- Inlined design system (self-contained; formerly theme.js) ---
 // Shared design system for the widget set: color tokens, fonts, layout, the
 // common card shell, drag/resize handles, a last-known-good cache, and the
@@ -131,7 +131,7 @@ const card = (variant, w, h, x = 0, y = 0) => `
   .ws-drag  { position:absolute; top:6px; left:6px; z-index:30;
               width:18px; height:18px; border-radius:6px;
               display:flex; align-items:center; justify-content:center;
-              font-size:11px; line-height:1; cursor:grab; opacity:0.22;
+              font-size:11px; line-height:1; cursor:grab; opacity:0.42;
               transition:opacity .15s ease; user-select:none;
               -webkit-user-select:none;
               color:${variant === "dark" ? T.onDarkMute : T.inkMute};
@@ -143,7 +143,7 @@ const card = (variant, w, h, x = 0, y = 0) => `
   .ws-resize { position:absolute; bottom:5px; right:5px; z-index:30;
                width:16px; height:16px; border-radius:5px;
                display:flex; align-items:center; justify-content:center;
-               font-size:11px; line-height:1; cursor:nwse-resize; opacity:0.22;
+               font-size:11px; line-height:1; cursor:nwse-resize; opacity:0.42;
                transition:opacity .15s ease; user-select:none;
                -webkit-user-select:none;
                color:${variant === "dark" ? T.onDarkMute : T.inkMute};
@@ -344,7 +344,6 @@ const resolve = (key, props, parse, mock) => {
   return { data: mock, mock: true };
 };
 // --- End inlined design system ---
-
 // The three most recent files in Downloads, shown on a frosted-glass card with
 // each file's real macOS preview above its name.
 //
@@ -367,34 +366,38 @@ export const refreshFrequency = 1000 * 30; // every 30s
 // File names use the system font to match Finder.
 const sysFont = `-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif`;
 
-export const className = card("dark", 360, 180, ...LAYOUT.drop) + `
-  background: rgba(44,46,54,0.40); backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  border: 1px solid rgba(255,255,255,0.16);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.22);
-  padding: 18px 14px; display:flex; align-items:center; justify-content:center;
-
-  .grid  { display:flex; align-items:flex-start; justify-content:space-between;
-           gap:6px; width:100%; }
-  .tile  { flex:1 1 0; min-width:0; display:flex; flex-direction:column;
-           align-items:center; gap:9px; padding:6px 4px; border-radius:12px;
-           cursor:pointer; transition:background .15s ease; }
-  .tile:hover { background:rgba(255,255,255,0.09); }
-  .thumb { width:64px; height:64px; display:flex; align-items:center;
-           justify-content:center; }
-  .thumb img { max-width:64px; max-height:64px; width:auto; height:auto;
-               object-fit:contain;
-               filter:drop-shadow(0 3px 7px rgba(0,0,0,0.40)); }
-  .chip  { width:54px; height:54px; border-radius:12px; display:flex;
-           align-items:center; justify-content:center; color:#fff;
-           box-shadow: inset 0 1px 0 rgba(255,255,255,0.30), 0 3px 7px rgba(0,0,0,0.35); }
-  .chip svg { width:26px; height:26px; }
-  .name  { font-family:${sysFont}; font-size:11px; line-height:1.28;
-           color:${T.onDark}; text-align:center; width:100%;
-           display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
-           overflow:hidden; word-break:break-word; }
+const FONTS = "recent-downloads.widget/fonts";
+// A manila folder with a typed tab label. The three newest files are sheets
+// of paper in the folder, each held by a paper clip with the file's real
+// preview, its name typed underneath, size and age in small caps, and a red
+// RECEIVED stamp on the folder. Click a sheet to open the file.
+export const className = card("dark", 360, 214, ...LAYOUT.drop) + `
+  @font-face { font-family: "Special Elite"; src: url("${FONTS}/SpecialElite-400.woff2") format("woff2"); }
+  @font-face { font-family: "Barlow Condensed"; src: url("${FONTS}/BarlowCondensed-700.woff2") format("woff2"); font-weight: 700; }
+  --type: "Special Elite", "Courier New", monospace; --cond: "Barlow Condensed", "Arial Narrow", sans-serif;
+  background: transparent; box-shadow: none; backdrop-filter: none; padding: 0; overflow: visible; user-select:none; -webkit-user-select:none;
+  .ws-drag { top: 32px; left: 148px; color:#7a6a45; background: rgba(0,0,0,0.06); } .ws-resize { bottom: 6px; right: 6px; color:#7a6a45; background: rgba(0,0,0,0.06); }
+  .folder { position:absolute; left:0; right:0; top: 26px; bottom: 0; border-radius: 4px 10px 10px 10px;
+            background: linear-gradient(180deg, #EFD79F 0%, #E3C27F 55%, #D6B26A 100%);
+            box-shadow: 0 24px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.55), inset 0 -2px 0 rgba(0,0,0,0.08); }
+  .folder::before { content:""; position:absolute; inset:0; border-radius: inherit; pointer-events:none; opacity: 0.45; mix-blend-mode: multiply; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"); }
+  .tab { position:absolute; left: 14px; top: 0; width: 128px; height: 34px; border-radius: 8px 8px 0 0; background: linear-gradient(180deg, #F1DBA6 0%, #E3C27F 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.55); }
+  .tab .label { position:absolute; left: 10px; right: 10px; top: 8px; height: 18px; background: #FBF9F3; box-shadow: 0 1px 2px rgba(0,0,0,0.25); font: 12px/18px var(--type); color:#2B2622; text-align:center; letter-spacing: 2px; }
+  .stamp { position:absolute; right: 18px; top: 34px; font: 700 8px/1.2 var(--cond); letter-spacing: 1.8px; text-transform:uppercase; color:#B8332B; border: 1.5px solid #B8332B; padding: 3px 6px; transform: rotate(-5deg); opacity: 0.8; mix-blend-mode: multiply; text-align:center; }
+  .papers { position:absolute; left: 16px; right: 16px; top: 46px; bottom: 14px; display:flex; gap: 12px; align-items:stretch; }
+  .paper { flex:1; min-width:0; position:relative; background: #FBFAF6; border-radius: 2px; cursor:pointer; padding: 22px 6px 8px;
+           box-shadow: 0 6px 14px rgba(0,0,0,0.28), 0 0 0 1px rgba(0,0,0,0.06); transform: rotate(var(--r)); transition: transform .15s ease;
+           display:flex; flex-direction:column; align-items:center; gap: 5px; }
+  .paper:hover { transform: rotate(var(--r)) translateY(-4px); }
+  .clip { position:absolute; top: -9px; left: 50%; width: 11px; height: 28px; margin-left: -6px; border-radius: 6px; border: 2px solid #A2A8B0; box-shadow: inset 0 0 0 2px #FBFAF6, inset 0 0 0 4px #C4C9CF, 0 1px 1px rgba(0,0,0,0.2); }
+  .thumb { width: 60px; height: 60px; display:flex; align-items:center; justify-content:center; }
+  .thumb img { max-width:60px; max-height:60px; width:auto; height:auto; object-fit:contain; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3)); }
+  .chip  { width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 3px 7px rgba(0,0,0,0.3); }
+  .chip svg { width:24px; height:24px; }
+  .fname { font: 9.5px/1.2 var(--type); color:#2B2622; text-align:center; width:100%; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word; }
+  .fmeta { font: 700 7px/1 var(--cond); letter-spacing: 1.4px; color:#8A8378; text-transform:uppercase; white-space:nowrap; }
+  .empty { position:absolute; inset: 46px 16px 14px; display:flex; align-items:center; justify-content:center; font: 13px var(--type); color:#7A6A45; }
 `;
-
 const shq = (s) => `'${String(s).replace(/'/g, "'\\''")}'`;
 
 // Truncate a long name in the middle while keeping the extension visible.
@@ -447,70 +450,46 @@ const Glyph = ({ name }) => {
 
 const parse = (output) =>
   (output || "").trim().split("\n").filter(Boolean).map((line) => {
-    const parts = line.split("|");
-    // Line format: mtime|size|path|base64. base64 contains no "|", so peel it
-    // off the end; the remaining fields rejoin into the path, which may contain "|".
-    const b64 = parts.pop() || "";
-    const path = parts.slice(2).join("|");
-    const name = path.split("/").pop();
-    const dot = name.lastIndexOf(".");
-    const ext = dot > 0 ? name.slice(dot + 1) : "";
-    return { path, name, ext, b64 };
+    const parts = line.split("|"); const b64 = parts.pop() || ""; const path = parts.slice(2).join("|");
+    const name = path.split("/").pop(); const dot = name.lastIndexOf("."); const ext = dot > 0 ? name.slice(dot + 1) : "";
+    return { path, name, ext, b64, mtime: parseInt(parts[0], 10) || 0, size: parseInt(parts[1], 10) || 0 };
   });
-
-// Memo of the last render so the periodic refresh doesn't re-render (and flash
-// the thumbnails) when the Downloads list is unchanged. Returning the same
-// element reference leaves the DOM — and the decoded images — untouched.
+const fmtSize = (b) => b >= 1e9 ? `${(b / 1e9).toFixed(1)} GB` : b >= 1e6 ? `${(b / 1e6).toFixed(1)} MB` : b >= 1e3 ? `${Math.round(b / 1e3)} KB` : b ? `${b} B` : "";
+const agoOf = (t) => { if (!t) return ""; const s = Math.max(0, Date.now() / 1000 - t); return s < 3600 ? `${Math.max(1, Math.round(s / 60))}m ago` : s < 86400 ? `${Math.round(s / 3600)}h ago` : `${Math.round(s / 86400)}d ago`; };
+const TILT = ["-1.6deg", "0.9deg", "-0.5deg"];
 let __dlSig = null, __dlEl = null;
-
 export const render = (props) => {
   if (isLoading(props)) return <Skel tint={T.inkMute} />;
-
-  let rows = parse(props.output);
-  let staleTs = null;
-  if (rows.length) {
-    remember("drop", rows);
-  } else {
-    const cached = recall("drop");
-    if (cached && cached.data && cached.data.length) {
-      rows = cached.data;
-      staleTs = cached.ts;
-    }
-  }
-
-  if (!rows.length) return <Empty text="Downloads is empty" />;
-
-  const sig = JSON.stringify({
-    staleTs,
-    rows: rows.map((f) => [f.path, f.name, f.ext, f.b64 ? f.b64.length : 0]),
-  });
+  let rows = parse(props.output); let staleTs = null;
+  let sample = false;
+  if (rows.length) remember("drop", rows); else { const cached = recall("drop"); if (cached && cached.data && cached.data.length) { rows = cached.data; staleTs = cached.ts; } else { sample = true; rows = [
+    { path: "", name: "Quarterly_plan_v3.pdf", ext: "pdf", b64: "", mtime: Date.now() / 1000 - 1800, size: 2.4e6 },
+    { path: "", name: "IMG_2041.heic", ext: "heic", b64: "", mtime: Date.now() / 1000 - 9000, size: 3.1e6 },
+    { path: "", name: "widget-suite.zip", ext: "zip", b64: "", mtime: Date.now() / 1000 - 86400, size: 14.2e6 } ]; } }
+  const sig = JSON.stringify({ staleTs, sample, rows: rows.map((f) => [f.path, f.name, f.b64 ? f.b64.length : 0]) });
   if (sig === __dlSig && __dlEl) return __dlEl;
   __dlSig = sig;
-
+  const newest = rows.reduce((a, f) => Math.max(a, f.mtime || 0), 0);
+  const stampDate = newest ? new Date(newest * 1000).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }).toUpperCase() : "";
   return (__dlEl = (
     <div aria-label={`${rows.length} recent downloads`}>
+      <div className="tab"><div className="label">DOWNLOADS</div></div>
+      <div className="folder" />
       <DragHandle k="drop" />
       <ResizeHandle k="drop" />
+      {sample ? <div className="stamp">Sample<br />sheets</div> : stampDate ? <div className="stamp">Received<br />{stampDate}</div> : null}
+      {rows.length ? (
+        <div className="papers">
+          {rows.slice(0, 3).map((f, i) => { const { color, icon } = cat(f.ext); return (
+            <div className="paper" key={i} title={f.name} style={{ "--r": TILT[i % 3] }} onClick={() => f.path && run(`open ${shq(f.path)}`)}>
+              <span className="clip" />
+              <div className="thumb">{f.b64 ? <img src={`data:image/png;base64,${f.b64}`} alt="" /> : <div className="chip" style={{ background: `linear-gradient(160deg, ${color}, ${color}cc)` }}><Glyph name={icon} /></div>}</div>
+              <div className="fname">{midTrunc(f.name, 26)}</div>
+              <div className="fmeta">{[fmtSize(f.size), agoOf(f.mtime)].filter(Boolean).join(" · ")}</div>
+            </div>); })}
+        </div>
+      ) : <div className="empty">Nothing in Downloads.</div>}
       {staleTs && <Stale ts={staleTs} />}
-      <div className="grid">
-        {rows.map((f, i) => {
-          const { color, icon } = cat(f.ext);
-          return (
-            <div className="tile" key={i} title={f.name}
-                 onClick={() => run(`open ${shq(f.path)}`)}>
-              <div className="thumb">
-                {f.b64
-                  ? <img src={`data:image/png;base64,${f.b64}`} alt="" />
-                  : <div className="chip"
-                         style={{ background: `linear-gradient(160deg, ${color}, ${color}cc)` }}>
-                      <Glyph name={icon} />
-                    </div>}
-              </div>
-              <div className="name">{midTrunc(f.name)}</div>
-            </div>
-          );
-        })}
-      </div>
     </div>
   ));
 };

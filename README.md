@@ -12,13 +12,17 @@ runs on any Mac with no extra files beyond the bundled assets.
 
 ![screenshot](media/screenshot.png)
 
+A manila folder with a typed tab label. Each of the newest files is a sheet of paper held by a paper clip, with its real preview, its name typed underneath, size and age in small caps, and a red RECEIVED stamp. Typefaces: Special Elite and Barlow Condensed. All fonts are under the SIL Open Font License; see `recent-downloads.widget/fonts/OFL.txt`.
+
+## Before and after
+
+![Before and after](media/before-after.png)
+
 ### On the desktop
 
 The widget running alongside the full set:
 
-![The Übersicht widget suite running on a desktop](https://raw.githubusercontent.com/jke48222/widget-suite/main/homescreen.gif)
-
-[Full-resolution video](media/homescreen.mp4)
+![The Übersicht widget suite composed on one desktop](https://raw.githubusercontent.com/jke48222/widget-suite/main/homescreen.png)
 
 ## Requirements
 
