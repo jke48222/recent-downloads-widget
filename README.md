@@ -1,6 +1,6 @@
 # recent-downloads
 
-> The three most recent files in your Downloads folder with real macOS previews.
+> The three most recent files in your Downloads folder as sheets in a manila folder, with real macOS previews.
 
 [![Release](https://img.shields.io/github/v/release/jke48222/recent-downloads-widget?label=release)](https://github.com/jke48222/recent-downloads-widget/releases/latest) [![License: MIT](https://img.shields.io/github/license/jke48222/recent-downloads-widget)](LICENSE) ![Platform: macOS](https://img.shields.io/badge/platform-macOS-lightgrey)
 
@@ -12,7 +12,7 @@ runs on any Mac with no extra files beyond the bundled assets.
 
 ![screenshot](media/screenshot.png)
 
-A manila folder with a typed tab label. Each of the newest files is a sheet of paper held by a paper clip, with its real preview, its name typed underneath, size and age in small caps, and a red RECEIVED stamp. Typefaces: Special Elite and Barlow Condensed. All fonts are under the SIL Open Font License; see `recent-downloads.widget/fonts/OFL.txt`.
+A manila folder, front flap closed, with the three newest downloads as sheets standing inside it: a real QuickLook preview on each, the name typed on the sheet, a paperclip on the first, and a red RECEIVED date stamp on the flap. Hover lifts a sheet; click opens the file. Typeface: Special Elite. All fonts are under the SIL Open Font License; see `recent-downloads.widget/fonts/OFL.txt`.
 
 ## Before and after
 
